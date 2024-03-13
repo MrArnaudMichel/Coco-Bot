@@ -1,3 +1,4 @@
+import os
 from datetime import timedelta
 
 import assemblyai as aai
@@ -71,4 +72,6 @@ class Edit:
         tasks.append((video_path, (start, self.video.duration), subtitles, i))
         for task in tasks:
             self.split_part(*task)
+        os.remove("subtitles.srt")
         print(colored("> Done splitting video.", "green"))
+
