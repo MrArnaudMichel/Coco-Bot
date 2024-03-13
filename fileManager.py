@@ -66,6 +66,18 @@ class FileManager:
         """
         return os.listdir(os.path.join(self.ROOT_DIR, directory))
 
+    def get_all_videos(self) -> list:
+        """
+        Gets all the videos in the given directory.
+        :param directory:
+        :return:
+        """
+        f = open("config/video_titles.txt", "r")
+        lines = f.readlines()
+        f.close()
+
+        return lines
+
     def write_to_file(self, file: str, data: str) -> None:
         """
         Writes data to a file.

@@ -14,6 +14,9 @@ from termcolor import colored
 
 
 class YouTube:
+    """
+    YouTube class to download a video from YouTube.
+    """
     def __init__(self, file_manager: FileManager):
         self.file_manager = file_manager
         self.DOWNLOAD_DIR = "downloads"
@@ -41,7 +44,7 @@ class YouTube:
         :param url:
         :return title_hash:
         """
-        print(colored("> Downloading video...", "green"))
+        print(colored("> Downloading video... This may take a while.", "green"))
 
         cookie_jar = http.cookiejar.MozillaCookieJar('config/cookies.txt')
         cookie_jar.load()
