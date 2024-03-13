@@ -8,9 +8,12 @@ from moviepy.video.tools.subtitles import SubtitlesClip
 from termcolor import colored
 
 from scipy.ndimage import gaussian_filter
+
+
 def blur(image):
     """ Returns a blurred (radius=2 pixels) version of the image """
     return gaussian_filter(image.astype(float), sigma=2)
+
 
 class Edit:
     """
@@ -77,8 +80,10 @@ class Edit:
         print(colored("> Adding subtitles...", "green"))
         if self.config.transcribe:
             subtitles_clip = SubtitlesClip("subtitles.srt",
-                                           lambda txt: TextClip(txt, font=self.config.font, fontsize=self.config.font_size,
-                                                                color=self.config.font_color)).set_duration(video.duration)
+                                           lambda txt: TextClip(txt, font=self.config.font,
+                                                                fontsize=self.config.font_size,
+                                                                color=self.config.font_color)).set_duration(
+                video.duration)
             final = CompositeVideoClip([video, subtitles_clip.set_position(('center', 'center'))],
                                        size=(self.config.width, self.config.height))
         print(colored(f"> Rendering part {i}...", "green"))
@@ -130,8 +135,7 @@ class Edit:
             new_height = int(original_height * ratio)
             video = video.resize(width=new_width, height=new_height)
             video = video.set_position(('center', 'center'))
-        #     Add the video but blurred in the background
-            background = video.fl_image( blur )
+            background = video.fl_image(blur)
             background = background.resize(width=self.config.width, height=self.config.height)
             video = CompositeVideoClip([background, video], size=(self.config.width, self.config.height))
         else:
@@ -151,8 +155,9 @@ class Edit:
             satisfying = satisfying.volumex(0)
             video.set_position((0, 0))
             video = video.resize(width=new_video_width, height=new_video_height)
-            video = CompositeVideoClip([video.set_position(('center', 'top')), satisfying.set_position(('center', 'bottom'))],
-                                       size=(self.config.width, self.config.height))
+            video = CompositeVideoClip(
+                [video.set_position(('center', 'top')), satisfying.set_position(('center', 'bottom'))],
+                size=(self.config.width, self.config.height))
 
         if self.config.music != "":
             music = AudioFileClip(self.config.music)

@@ -11,10 +11,10 @@ class FileManager:
     def __init__(self):
         self.ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
         print(self.ROOT_DIR)
-        self.DOWNLOAD_DIR = os.path.join(self.ROOT_DIR, "downloads")
-        self.UPLOAD_DIR = os.path.join(self.ROOT_DIR, "uploads")
-        self.ASSETS_DIR = os.path.join(self.ROOT_DIR, "assets")
-        self.CONFIG_DIR = os.path.join(self.ROOT_DIR, "config")
+        self.DOWNLOAD_DIR = "downloads"
+        self.UPLOAD_DIR = "uploads"
+        self.ASSETS_DIR = "assets"
+        self.CONFIG_DIR = "config"
 
     def create_download_dir(self) -> None:
         """
