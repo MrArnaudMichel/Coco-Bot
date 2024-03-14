@@ -64,7 +64,7 @@ class FileManager:
         :param directory:
         :return:
         """
-        return os.listdir(os.path.join(self.ROOT_DIR, directory))
+        return os.listdir(os.path.join(directory))
 
     def get_all_videos(self) -> list:
         """
