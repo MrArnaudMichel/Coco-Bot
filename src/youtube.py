@@ -61,6 +61,6 @@ class YouTube:
 
         # Use the hash as the output name
         video.download(self.DOWNLOAD_DIR, filename=title_hash+".mp4")
-        self.file_manager.write_to_file(f"{self.CONFIG}/video_titles.txt", f"{title_hash}+CharacterSplit+{video_title}\n")
+        self.file_manager.write_to_file(f"{self.CONFIG}/video_titles.txt", f"{title_hash}+CharacterSplit+{video_title}\n", add_to_end=True)
         print(colored(f"> Downloaded video as {title_hash}.mp4", "green"))
         return title_hash
