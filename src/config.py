@@ -67,3 +67,11 @@ class Config:
         """
         json_config = json.load(open(os.path.join(ROOT_DIR, "../config/config.json"), "r"))
         return json_config["firefox_profile"]
+
+    @classmethod
+    def get_title(cls):
+        """
+        Gets the title.
+        """
+        json_config = json.load(open(os.path.join(ROOT_DIR, "../config/config.json"), "r"))
+        return json_config["title"]

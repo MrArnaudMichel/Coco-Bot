@@ -9,10 +9,11 @@
   "threads": 8,
 
   "transcribe": true,
+  "title": "true",
   "satisfying": "",
   "music": "",
   "music_volume": 0.5,
   "width": 540,
   "height": 960,
-  "fps": 10
+  "fps": 24
 }

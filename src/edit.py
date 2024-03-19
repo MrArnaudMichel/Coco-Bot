@@ -10,6 +10,8 @@ from termcolor import colored
 
 from scipy.ndimage import gaussian_filter
 
+from config import Config
+
 
 def blur(image):
     """ Returns a blurred (radius=2 pixels) version of the image """
@@ -68,8 +70,9 @@ class Edit:
         :param title_text: Text to be displayed as the title.
         :return: CompositeVideoClip object with the title added.
         """
-        title_clip = TextClip(title_text, fontsize=50, color='white', font='Arial-Bold').set_duration(video.duration)
-        title_clip = title_clip.set_position(('center', 100))  # Position the title at the center top of the video
+        title_clip = TextClip(title_text, fontsize=((1 / (len(title_text)/5)) * 128), color='white',
+                              bg_color='black').set_duration(video.duration)
+        title_clip = title_clip.set_position(('center', 100))
         final_video = CompositeVideoClip([video, title_clip])
         return final_video
 
@@ -88,8 +91,8 @@ class Edit:
 
         final = self.edit_with_options(video, subtitles, i)
 
-        # Add title to the video
-        final = self.add_title(final, title_text)
+        if Config.get_title():
+            final = self.add_title(final, title_text)
 
         f = open("subtitles.srt", "w")
         f.write(subtitles)
@@ -105,7 +108,7 @@ class Edit:
                                        size=(self.config.width, self.config.height))
         print(colored(f"> Rendering part {i}...", "green"))
         os.makedirs(f"uploads/{self.video_name}", exist_ok=True)
-        final.write_videofile(f"uploads/{self.video_name}/part{i}.mp4", threads=self.config.threads, fps=24)
+        final.write_videofile(f"uploads/{self.video_name}/part{i}.mp4", threads=self.config.threads, fps=self.config.fp)
 
     def edit_with_options(self, video, subtitles, i):
         """
@@ -149,6 +152,11 @@ class Edit:
                 [video.set_position(('center', 'top')), satisfying.set_position(('center', 'bottom'))],
                 size=(self.config.width, self.config.height))
 
+        logo = ImageClip("assets/images/CocoBotLogo.png").set_duration(video.duration)
+        logo_resized = logo.resize((64, 64))  # Redimensionner le logo à 64x64 pixels
+        logo_positioned = logo_resized.set_position(('right', 'bottom'))  # Positionner le logo en bas à droite
+        video = CompositeVideoClip([video, logo_positioned])  # Ajouter le logo à la vidéo
+
         if self.config.music != "":
             music = AudioFileClip(self.config.music)
             music.set_duration(video.duration)
@@ -163,15 +171,19 @@ class Edit:
         :param from_end: Time to subtract from the end of each part.
         """
         video_path = "downloads/" + self.video_name + ".mp4"
+        subtitles = ""
+        title_text = ""
+        if Config.get_title():
+            title_text = input(colored("Enter the title to be added to the video: ", "blue"))
         start = 0
         end = seconds
         i = 1
         tasks = []
-        if self.transcript is None:
+        if self.transcript is None and self.config.transcribe == True:
             self.transcribe_video()
-        title_text = input("Enter the title to be added to the video: ")  # Prompt the user for the title
         while end < self.video.duration:
-            subtitles = self.get_subtitles((start, end - (i - 1) * from_end), i - 1)
+            if self.config.transcribe:
+                subtitles = self.get_subtitles((start, end - (i - 1) * from_end), i - 1)
             tasks.append((video_path, (start, end), subtitles, i, title_text))
             start = end - from_end
             end += seconds - from_end
