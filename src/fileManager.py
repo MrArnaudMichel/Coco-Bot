@@ -78,12 +78,17 @@ class FileManager:
 
         return lines
 
-    def write_to_file(self, file: str, data: str) -> None:
+    def write_to_file(self, file: str, data: str, add_to_end=False) -> None:
         """
         Writes data to a file.
+        :param add_to_end:
         :param file:
         :param data:
         :return:
         """
-        with open(file, "w") as f:
-            f.write(data)
+        if add_to_end:
+            with open(file, "a") as f:
+                f.write(data)
+        else:
+            with open(file, "w") as f:
+                f.write(data)
