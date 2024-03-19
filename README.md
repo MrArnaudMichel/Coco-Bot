@@ -12,6 +12,7 @@ Get started with CocoBot in just a few simple steps:
 3. Install dependencies by running: `npm install`.
 4. Start the application by running: `npm start`.
 5. Access the application through your web browser at the specified local host address.
-6. Please also see the [dependencies]([url](https://github.com/LeoKiefner/CocoBot-Automatic-Editing-Video-App/blob/main/requirements.txt))
+6. Please also see the [dependencies](https://github.com/LeoKiefner/CocoBot-Automatic-Editing-Video-App/blob/main/requirements.txt)
+
 **License:**
-CocoBot is licensed under the [MIT License](https://opensource.org/licenses/MIT). See the LICENSE file for more details.
+CocoBot is licensed under the [MIT License](https://github.com/LeoKiefner/CocoBot-Automatic-Editing-Video-App/tree/main?tab=MIT-1-ov-file). See the LICENSE file for more details.
