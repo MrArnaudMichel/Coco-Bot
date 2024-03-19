@@ -72,7 +72,7 @@ class Edit:
         start, end = start_end
         video: VideoFileClip = VideoFileClip(video_path).subclip(start, end)
 
-        video = self.edit_with_options(video, subtitles, i)
+        final = self.edit_with_options(video, subtitles, i)
 
         f = open("subtitles.srt", "w")
         f.write(subtitles)
@@ -104,7 +104,6 @@ class Edit:
         if self.transcript is None:
             self.transcribe_video()
         while end < self.video.duration:
-            print(start, end)
             subtitles = self.get_subtitles((start, end - (i - 1) * from_end), i - 1)
             tasks.append((video_path, (start, end), subtitles, i))
             start = end - from_end
