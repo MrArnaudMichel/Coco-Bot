@@ -51,3 +51,19 @@ class Config:
             exit(1)
         elif self.fp > 60:
             print(colored("WARNING: FPS more than 60 can increase file size and time to render.", "yellow"))
+
+    @classmethod
+    def get_headless(cls):
+        """
+        Gets the headless mode.
+        """
+        json_config = json.load(open(os.path.join(ROOT_DIR, "../config/config.json"), "r"))
+        return json_config["headless"]
+
+    @classmethod
+    def get_firefox_profile_path(cls):
+        """
+        Gets the Firefox profile path.
+        """
+        json_config = json.load(open(os.path.join(ROOT_DIR, "../config/config.json"), "r"))
+        return json_config["firefox_profile"]

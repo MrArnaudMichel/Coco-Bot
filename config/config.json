@@ -1,5 +1,7 @@
 {
   "assembly_ai_api_key": "2e0dba03d3d844f2acbd1294d7d4b5e0",
+  "headless": false,
+  "firefox_profile": "/home/arnaud/.mozilla/firefox/t3t85tzx.default",
   "font": "assets/fonts/LeagueSpartan-Bold.ttf",
   "font_size": 24,
   "font_color": "white",
