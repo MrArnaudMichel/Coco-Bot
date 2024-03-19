@@ -68,6 +68,8 @@ class Bananabot:
             elif choice == "4":
                 print(colored("\t -> Download video from Local File", "blue"))
                 path = input("Enter the path of the video (Absolute path): ")
+                title_hash = self.file_manager.download_video_from_local_file(path)
+                self.edit_video(title_hash)
                 print(colored(f"Downloading {path}...", "blue"))
             elif choice == "8":
                 print(colored("\t -> Help", "blue"))

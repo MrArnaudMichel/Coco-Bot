@@ -1,7 +1,9 @@
+import hashlib
 import json
 import os
 
 from imageio.testing import ROOT_DIR
+from termcolor import colored
 
 
 class FileManager:
@@ -92,3 +94,17 @@ class FileManager:
         else:
             with open(file, "w") as f:
                 f.write(data)
+
+    def download_video_from_local_file(self, path) -> str:
+        """
+        Downloads a video from a local file.
+        :param path:
+        :return:
+        """
+        os.makedirs(self.DOWNLOAD_DIR, exist_ok=True)
+        title_hash = hashlib.sha256(path.encode()).hexdigest()
+        os.system(f"cp {path} {self.DOWNLOAD_DIR}/{title_hash}.mp4")
+        self.write_to_file(f"{self.CONFIG_DIR}/video_titles.txt",
+                           f"{title_hash}+CharacterSplit+{path}\n", add_to_end=True)
+        print(colored(f"> Downloaded video as {title_hash}.mp4", "green"))
+        return title_hash
