@@ -1,4 +1,5 @@
 import copy
+import os
 from datetime import timedelta
 
 import assemblyai as aai
@@ -60,19 +61,35 @@ class Edit:
         subtitles = srt.compose(subs)
         return subtitles
 
-    def split_part(self, video_path, start_end, subtitles, i):
+    def add_title(self, video, title_text):
         """
-        Downloads a part of the video with subtitles and satisfying video.
-        :param video_path:
-        :param start_end:
-        :param subtitles:
-        :param i:
+        Adds a title to the video.
+        :param video: VideoFileClip object.
+        :param title_text: Text to be displayed as the title.
+        :return: CompositeVideoClip object with the title added.
+        """
+        title_clip = TextClip(title_text, fontsize=50, color='white', font='Arial-Bold').set_duration(video.duration)
+        title_clip = title_clip.set_position(('center', 100))  # Position the title at the center top of the video
+        final_video = CompositeVideoClip([video, title_clip])
+        return final_video
+
+    def split_part(self, video_path, start_end, subtitles, i, title_text):
+        """
+        Downloads a part of the video with subtitles and satisfying video, and adds a title.
+        :param video_path: Path to the video file.
+        :param start_end: Tuple containing start and end times for the part.
+        :param subtitles: Subtitles for the part.
+        :param i: Index of the part.
+        :param title_text: Text for the title.
         """
         print(colored(f"> Splitting part {i}...", "green"))
         start, end = start_end
         video: VideoFileClip = VideoFileClip(video_path).subclip(start, end)
 
         final = self.edit_with_options(video, subtitles, i)
+
+        # Add title to the video
+        final = self.add_title(final, title_text)
 
         f = open("subtitles.srt", "w")
         f.write(subtitles)
@@ -84,37 +101,11 @@ class Edit:
                                                                 fontsize=self.config.font_size,
                                                                 color=self.config.font_color)).set_duration(
                 video.duration)
-            final = CompositeVideoClip([video, subtitles_clip.set_position(('center', 'center'))],
+            final = CompositeVideoClip([final, subtitles_clip.set_position(('center', 'center'))],
                                        size=(self.config.width, self.config.height))
         print(colored(f"> Rendering part {i}...", "green"))
         os.makedirs(f"uploads/{self.video_name}", exist_ok=True)
         final.write_videofile(f"uploads/{self.video_name}/part{i}.mp4", threads=self.config.threads, fps=24)
-
-    def split_video(self, seconds: int = 60, from_end: int = 5):
-        """
-        Splits the video into parts.
-        :param seconds:
-        :param from_end:
-        """
-        video_path = "downloads/" + self.video_name + ".mp4"
-        start = 0
-        end = seconds
-        i = 1
-        tasks = []
-        if self.transcript is None:
-            self.transcribe_video()
-        while end < self.video.duration:
-            subtitles = self.get_subtitles((start, end - (i - 1) * from_end), i - 1)
-            tasks.append((video_path, (start, end), subtitles, i))
-            start = end - from_end
-            end += seconds - from_end
-
-            i += 1
-        tasks.append((video_path, (start, self.video.duration), subtitles, i))
-        for task in tasks:
-            self.split_part(*task)
-        os.remove("subtitles.srt")
-        print(colored("> Done splitting video.", "green"))
 
     def edit_with_options(self, video, subtitles, i):
         """
@@ -164,3 +155,31 @@ class Edit:
             music = music.volumex(self.config.music_volume)
             video = video.set_audio(music)
         return video
+
+    def split_video(self, seconds: int = 60, from_end: int = 5):
+        """
+        Splits the video into parts.
+        :param seconds: Duration of each part in seconds.
+        :param from_end: Time to subtract from the end of each part.
+        """
+        video_path = "downloads/" + self.video_name + ".mp4"
+        start = 0
+        end = seconds
+        i = 1
+        tasks = []
+        if self.transcript is None:
+            self.transcribe_video()
+        title_text = input("Enter the title to be added to the video: ")  # Prompt the user for the title
+        while end < self.video.duration:
+            subtitles = self.get_subtitles((start, end - (i - 1) * from_end), i - 1)
+            tasks.append((video_path, (start, end), subtitles, i, title_text))
+            start = end - from_end
+            end += seconds - from_end
+
+            i += 1
+        tasks.append((video_path, (start, self.video.duration), subtitles, i, title_text))
+        for task in tasks:
+            self.split_part(*task)
+        os.remove("subtitles.srt")
+        print(colored("> Done splitting video.", "green"))
+        self.video.close()
