@@ -3,6 +3,7 @@ import os
 from datetime import timedelta
 
 import assemblyai as aai
+import assemblyai.types
 import srt
 from moviepy.editor import *
 from moviepy.video.tools.subtitles import SubtitlesClip
@@ -42,7 +43,7 @@ class Edit:
             speaker_labels=True
         ))
 
-    def get_subtitles(self, start_end, index=0):
+    def get_subtitles(self, start_end, index=0) -> str:
         """
         Gets the subtitles for a part of the video.
         :param start_end:
@@ -50,7 +51,12 @@ class Edit:
         :return:
         """
         start, end = start_end
-        subtitles = copy.copy(self.transcript.export_subtitles_srt())
+        try:
+            subtitles = copy.copy(self.transcript.export_subtitles_srt())
+        except assemblyai.types.TranscriptError:
+            print(colored("ERROR: Transcript not found. Transcribing the video...", "red"))
+            print(colored("This error may occur if the video have no subtitles or if the video is too long.", "red"))
+            return ""
 
         subs = list(srt.parse(subtitles))
 
@@ -98,7 +104,7 @@ class Edit:
         f.write(subtitles)
         f.close()
         print(colored("> Adding subtitles...", "green"))
-        if self.config.transcribe:
+        if self.config.transcribe and subtitles != "":
             subtitles_clip = SubtitlesClip("subtitles.srt",
                                            lambda txt: TextClip(txt, font=self.config.font,
                                                                 fontsize=self.config.font_size,

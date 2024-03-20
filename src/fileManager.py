@@ -2,7 +2,7 @@ import hashlib
 import json
 import os
 
-from imageio.testing import ROOT_DIR
+
 from termcolor import colored
 
 

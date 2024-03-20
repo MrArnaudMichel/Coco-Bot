@@ -1,16 +1,19 @@
 {
-  "assembly_ai_api_key": "2e0dba03d3d844f2acbd1294d7d4b5e0",
+  "assembly_ai_api_key": "",
+  "headless": false,
+  "firefox_profile": "",
   "font": "assets/fonts/LeagueSpartan-Bold.ttf",
-  "font_size": 24,
+  "font_size": 20,
   "font_color": "white",
   "font_background_color": "black",
   "threads": 8,
 
   "transcribe": true,
+  "title": "true",
   "satisfying": "",
   "music": "",
   "music_volume": 0.5,
   "width": 540,
   "height": 960,
-  "fps": 10
+  "fps": 24
 }
