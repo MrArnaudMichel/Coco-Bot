@@ -21,7 +21,7 @@ class FileManager:
     def create_download_dir(self) -> None:
         """
         Creates the download directory if it does not exist.
-        :return:
+        :return: None
         """
         if not os.path.exists(self.DOWNLOAD_DIR):
             os.makedirs(self.DOWNLOAD_DIR)
@@ -29,7 +29,7 @@ class FileManager:
     def create_upload_dir(self) -> None:
         """
         Creates the upload directory if it does not exist.
-        :return:
+        :return: None
         """
         if not os.path.exists(self.UPLOAD_DIR):
             os.makedirs(self.UPLOAD_DIR)
@@ -37,7 +37,7 @@ class FileManager:
     def create_assets_dir(self) -> None:
         """
         Creates the assets directory if it does not exist.
-        :return:
+        :return: None
         """
         if not os.path.exists(self.ASSETS_DIR):
             os.makedirs(self.ASSETS_DIR)
@@ -45,7 +45,7 @@ class FileManager:
     def create_config_dir(self) -> None:
         """
         Creates the config directory if it does not exist.
-        :return:
+        :return: None
         """
         if not os.path.exists(self.CONFIG_DIR):
             os.makedirs(self.CONFIG_DIR)
@@ -53,7 +53,7 @@ class FileManager:
     def create_all_dirs(self) -> None:
         """
         Creates all the directories if they do not exist.
-        :return:
+        :return: None
         """
         self.create_download_dir()
         self.create_upload_dir()
@@ -63,16 +63,16 @@ class FileManager:
     def get_all_files(self, directory: str = "downloads") -> list:
         """
         Gets all the files in the given directory.
-        :param directory:
-        :return:
+        :param directory: Directory to get the files from.
+        :return: List of files.
         """
         return os.listdir(os.path.join(directory))
 
     def get_all_videos(self) -> list:
         """
         Gets all the videos in the given directory.
-        :param directory:
-        :return:
+        :param directory: Directory to get the videos from.
+        :return: List of videos.
         """
         f = open("config/video_titles.txt", "r")
         lines = f.readlines()
@@ -83,10 +83,10 @@ class FileManager:
     def write_to_file(self, file: str, data: str, add_to_end=False) -> None:
         """
         Writes data to a file.
-        :param add_to_end:
-        :param file:
-        :param data:
-        :return:
+        :param add_to_end: Whether to add to the end of the file.
+        :param file: File to write to.
+        :param data: Data to write.
+        :return: None
         """
         if add_to_end:
             with open(file, "a") as f:
@@ -95,11 +95,11 @@ class FileManager:
             with open(file, "w") as f:
                 f.write(data)
 
-    def download_video_from_local_file(self, path) -> str:
+    def download_video_from_local_file(self, path: str) -> str:
         """
-        Downloads a video from a local file.
-        :param path:
-        :return:
+        Downloads the video from the local file.
+        :param path: Path to the video file.
+        :return: Hash of the video.
         """
         os.makedirs(self.DOWNLOAD_DIR, exist_ok=True)
         title_hash = hashlib.sha256(path.encode()).hexdigest()
