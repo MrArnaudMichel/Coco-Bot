@@ -9,7 +9,6 @@ class YouTube:
     """
     YouTube class to download a video from YouTube.
     """
-
     def __init__(self, file_manager: FileManager):
         self.file_manager = file_manager
         self.DOWNLOAD_DIR = "downloads"

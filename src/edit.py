@@ -7,7 +7,6 @@ import srt
 from moviepy.editor import *
 from moviepy.video.tools.subtitles import SubtitlesClip
 from termcolor import colored
-
 from scipy.ndimage import gaussian_filter
 
 from config import Config
@@ -170,9 +169,9 @@ class Edit:
                 size=(self.config.width, self.config.height))
 
         logo = ImageClip("assets/images/CocoBotLogo.png").set_duration(video.duration)
-        logo_resized = logo.resize((64, 64))  # Redimensionner le logo à 64x64 pixels
-        logo_positioned = logo_resized.set_position(('right', 'bottom'))  # Positionner le logo en bas à droite
-        video = CompositeVideoClip([video, logo_positioned])  # Ajouter le logo à la vidéo
+        logo_resized = logo.resize((64, 64))
+        logo_positioned = logo_resized.set_position(('right', 'bottom'))
+        video = CompositeVideoClip([video, logo_positioned])
 
         if self.config.music != "":
             music = AudioFileClip(self.config.music)

@@ -29,13 +29,13 @@ class Bananabot:
         print(colored(open("config/logo", "r").read(), "yellow"))
 
         print(colored("Welcome to BananaBot!", "green"))
-        print(colored("What would you like to do?", "green"))
         self.start()
 
     def start(self):
         """
         Starts the bot.
         """
+        print(colored("What would you like to do?", "green"))
         print("""
                 1. Download video from YouTube
                 2. See the downloaded video
@@ -99,12 +99,13 @@ class Bananabot:
             video: tuple[str, str] = (line.split("CharacterSplit")[0], lines[i].split("CharacterSplit")[1])
             print(f"{i + 1}. {video[1]}")
         choice = input("Enter the number of the video you want to see: ")
-        video = lines[int(choice) - 1].split("CharacterSplit")[0]
+        video = lines[int(choice) - 1].split("CharacterSplit")[0], lines[int(choice) - 1].split("CharacterSplit")[1]
         print(colored(f"> Showing {video}...", "blue"))
         print(colored(f"""
-            Name: {video}
-            Path: uploads/{video}/
-            Number of parts: {len(self.file_manager.get_all_files(f"uploads/{video}"))}
+            Title: {video[1]}
+            Id: {video[0]}
+            Path: uploads/{video[0]}/
+            Number of parts: {len(self.file_manager.get_all_files(f"uploads/{video[0]}"))}
             """, "blue"))
 
     def help(self):
