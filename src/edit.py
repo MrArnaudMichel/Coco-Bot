@@ -1,6 +1,6 @@
 import copy
 from datetime import timedelta
-
+from status import *
 import assemblyai as aai
 import assemblyai.types
 import srt
@@ -34,7 +34,7 @@ class Edit:
         """
         Transcribes the video using AssemblyAI.
         """
-        print(colored("> Transcribing video...", "green"))
+        info("\t> Transcribing video...")
         self.transcript = aai.Transcriber().transcribe("downloads/" + self.video_name + ".mp4", config=aai.types.
                                                        TranscriptionConfig(
             auto_highlights=True,
@@ -52,8 +52,8 @@ class Edit:
         try:
             subtitles = copy.copy(self.transcript.export_subtitles_srt())
         except assemblyai.types.TranscriptError:
-            print(colored("ERROR: Transcript not found. Transcribing the video...", "red"))
-            print(colored("This error may occur if the video have no subtitles or if the video is too long.", "red"))
+            error("Transcript not found. Transcribing the video...")
+            error("This error may occur if the video have no subtitles or if the video is too long.")
             return ""
 
         subs = list(srt.parse(subtitles))
@@ -101,7 +101,7 @@ class Edit:
         :param i: Index of the part.
         :param title_text: Text for the title.
         """
-        print(colored(f"> Splitting part {i}...", "green"))
+        info(f"\t> Splitting part {i}...")
         start, end = start_end
         video: VideoFileClip = VideoFileClip(video_path).subclip(start, end)
 
@@ -113,7 +113,7 @@ class Edit:
         f = open("subtitles.srt", "w")
         f.write(subtitles)
         f.close()
-        print(colored("> Adding subtitles...", "green"))
+        info(f"\t> Adding subtitles to part {i}...")
         if self.config.transcribe and subtitles != "":
             subtitles_clip = SubtitlesClip("subtitles.srt",
                                            lambda txt: TextClip(txt, font=self.config.font,
@@ -122,7 +122,7 @@ class Edit:
                 video.duration)
             final = CompositeVideoClip([final, subtitles_clip.set_position(('center', 'center'))],
                                        size=(self.config.width, self.config.height))
-        print(colored(f"> Rendering part {i}...", "green"))
+        info(f"\t> Rendering part {i}...")
         os.makedirs(f"uploads/{self.video_name}", exist_ok=True)
         final.write_videofile(f"uploads/{self.video_name}/part{i}.mp4", threads=self.config.threads, fps=self.config.fp)
 
@@ -190,7 +190,7 @@ class Edit:
         subtitles = ""
         title_text = ""
         if Config.get_title():
-            title_text = input(colored("Enter the title to be added to the video: ", "blue"))
+            title_text = question("Enter the title to be added to the video: ")
         start = 0
         end = seconds
         i = 1
@@ -209,5 +209,5 @@ class Edit:
         for task in tasks:
             self.split_part(*task)
         os.remove("subtitles.srt")
-        print(colored("> Done splitting video.", "green"))
+        success("> Done splitting video.")
         self.video.close()

@@ -75,3 +75,38 @@ class Config:
         """
         json_config = json.load(open(os.path.join(ROOT_DIR, "../config/config.json"), "r"))
         return json_config["title"]
+
+    @classmethod
+    def get_account_uuid(cls):
+        """
+        Gets the account UUID.
+        """
+        json_config = json.load(open(os.path.join(ROOT_DIR, "../config/config.json"), "r"))
+        return json_config["youtube_id"]
+
+    @classmethod
+    def get_account_nickname(cls):
+        """
+        Gets the account nickname.
+        """
+        json_config = json.load(open(os.path.join(ROOT_DIR, "../config/config.json"), "r"))
+        return json_config["youtube_nickname"]
+
+    @classmethod
+    def get_verbose(cls) -> bool:
+        """
+        Gets the verbose flag from the config file.
+
+        Returns:
+            verbose (bool): The verbose flag
+        """
+        with open(os.path.join(ROOT_DIR, "config.json"), "r") as file:
+            return json.load(file)["verbose"]
+
+    @classmethod
+    def get_is_for_kids(cls):
+        """
+        Gets the is_for_kids flag.
+        """
+        json_config = json.load(open(os.path.join(ROOT_DIR, "../config/config.json"), "r"))
+        return json_config["is_for_kids"]

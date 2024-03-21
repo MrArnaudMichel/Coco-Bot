@@ -3,6 +3,7 @@ from youtube import YouTube
 from edit import Edit
 from termcolor import colored
 from config import Config
+from status import *
 
 
 class Bananabot:
@@ -28,14 +29,14 @@ class Bananabot:
         """
         print(colored(open("config/logo", "r").read(), "yellow"))
 
-        print(colored("Welcome to BananaBot!", "green"))
+        success("Welcome to BananaBot!", show_emoji=False)
         self.start()
 
     def start(self):
         """
         Starts the bot.
         """
-        print(colored("What would you like to do?", "green"))
+        info("What do you want to do?")
         print("""
                 1. Download video from YouTube
                 2. See the downloaded video
@@ -44,42 +45,41 @@ class Bananabot:
                 8. Help
                 9. Exit
                 """)
-        choice = input("Enter your choice: ")
+        choice = question("Enter the number of the choice you want to do: ")
 
         while True:
             if choice == "1":
-                print(colored("\t -> Download video from YouTube", "blue"))
-                url = input("Enter the YouTube URL: ")
+                info("\t> Download video from YouTube")
+                url = question("Enter the YouTube URL: ")
                 if url == "":
-                    print(colored("URL cannot be empty.", "red"))
+                    error("Invalid YouTube URL. Please try again.")
                 elif "youtube.com" not in url:
-                    print(colored("Invalid YouTube URL.", "red"))
+                    error("Invalid YouTube URL. Please try again.")
                 elif "watch?v=" not in url:
-                    print(colored("Invalid YouTube URL.", "red"))
+                    error("Invalid YouTube URL. Please try again.")
                 else:
                     title_hash = self.youtube.download_video(url)
                     self.edit_video(title_hash)
             elif choice == "2":
-                print(colored("\t -> Downloaded video", "blue"))
+                info("\t> See the downloaded video")
                 self.show_downloaded_video()
             elif choice == "3":
-                print(colored("\t -> Upload video to YouTube", "blue"))
-                print("Upload video to YouTube")
+                info("\t> Upload video to YouTube")
+                path = self.show_downloaded_video() + "part1.mp4"
+                self.youtube.upload_video(path)
             elif choice == "4":
-                print(colored("\t -> Download video from Local File", "blue"))
-                path = input("Enter the path of the video (Absolute path): ")
+                info("\t> Download video from Local File")
+                path = question("Enter the path of the video (Absolute path): ")
                 title_hash = self.file_manager.download_video_from_local_file(path)
                 self.edit_video(title_hash)
-                print(colored(f"Downloading {path}...", "blue"))
             elif choice == "8":
-                print(colored("\t -> Help", "blue"))
+                info("\t> Help")
                 self.help()
-
             elif choice == "9":
-                print(colored("Exiting...", "red"))
+                info("\t> Exit")
                 exit()
             else:
-                print(colored("ERROR: Invalid choice. Please try again.", "red"))
+                error("Invalid choice. Please try again.")
             self.start()
 
     def edit_video(self, title_hash):
@@ -97,16 +97,17 @@ class Bananabot:
         lines = self.file_manager.get_all_videos()
         for i, line in enumerate(lines):
             video: tuple[str, str] = (line.split("CharacterSplit")[0], lines[i].split("CharacterSplit")[1])
-            print(f"{i + 1}. {video[1]}")
-        choice = input("Enter the number of the video you want to see: ")
+            info(f"{i + 1}. {video[1]}")
+        choice = question("Enter the number of the video you want to see: ")
         video = lines[int(choice) - 1].split("CharacterSplit")[0], lines[int(choice) - 1].split("CharacterSplit")[1]
-        print(colored(f"> Showing {video}...", "blue"))
+        info(f"\t> Showing {video[1]}")
         print(colored(f"""
             Title: {video[1]}
             Id: {video[0]}
             Path: uploads/{video[0]}/
             Number of parts: {len(self.file_manager.get_all_files(f"uploads/{video[0]}"))}
             """, "blue"))
+        return f'uploads/{video[0]}/'
 
     def help(self):
         """
@@ -121,27 +122,28 @@ class Bananabot:
                 6. How to download the bot?
                 7. How to edit the bot?
         """)
-        choice = input("Enter the number of the question you want to see: ")
+        choice = question("Enter the number of the question you want to see: ")
         if choice == "1":
-            print(colored(
-                "To have your AssemblyAI API key, go to https://www.assemblyai.com/dashboard/signup and sign up. Then, go to the dashboard and copy your API key."),
-                "green")
+            info("How to have my AssemblyAI API key?")
+            info("\t> To have your AssemblyAI API key, go to https://www.assemblyai.com/dashboard/signup and sign up. Then, go to the dashboard and copy your API key.")
         elif choice == "2":
-            print(colored("To use the bot, follow the instructions given in the README.md file."), "green")
+            info("How to use the bot?")
+            info("\t> To use the bot, follow the instructions given in the README.md file.")
         elif choice == "3":
-            print(colored("To change the configuration, go to config/config.json and change the values."), "green")
+            info("How to change the configuration?")
+            info("\t> To change the configuration, go to config/config.json and change the values.")
         elif choice == "4":
-            print(colored(
-                "To contribute to the bot, go to https://github.com/MrArnaudMichel/BananaBot and fork the repository. Then, make your changes and create a pull request."),
-                "green")
+            info("How can I contribute to the bot?")
+            info("\t> To contribute to the bot, go to the GitHub repository and create a pull request.")
         elif choice == "5":
-            print(colored(
-                "To report a bug, go to https://github.com/MrArnaudMichel/BananaBot/issues and create a new issue."),
-                "green")
+            info("How can I report a bug?")
+            info("\t> To report a bug, go to the GitHub repository and create an issue.")
         elif choice == "6":
-            print(colored("To download the bot, go to LinkDiscord and click on the download button."), "green")
+            info("How to download the bot?")
+            info("\t> To download the bot, go to the GitHub repository and download the source code.")
         elif choice == "7":
-            print(colored("It's not allowed to edit the bot.", "red"))
+            info("How to edit the bot?")
+            info("\t> To edit the bot, go to the src directory and edit the files.")
         else:
-            print(colored("ERROR: Invalid choice. Please try again.", "red"))
+            error("Invalid choice. Please try again.")
         self.start()
