@@ -41,6 +41,10 @@ class YouTube:
     """
 
     def __init__(self, file_manager: FileManager):
+        self.metadata = {
+            "title": "testtitle",
+            "description": "testdescription"
+        }
         self.file_manager = file_manager
         self.DOWNLOAD_DIR = "downloads"
         self.UPLOAD_DIR = "uploads"
@@ -102,55 +106,57 @@ class YouTube:
         :param video_path:
         :return bool:
         """
+        print("Check 0")
         try:
             self.get_channel_id()
-
+            print(self.channel_id)
+            print("Check 1")
             driver = self.browser
             verbose = Config.get_verbose()
-
+            print("Check 2")
             # Go to youtube.com/upload
             driver.get("https://www.youtube.com/upload")
-
+            print("Check 3")
             # Set video file
             FILE_PICKER_TAG = "ytcp-uploads-file-picker"
             file_picker = driver.find_element(By.TAG_NAME, FILE_PICKER_TAG)
             INPUT_TAG = "input"
             file_input = file_picker.find_element(By.TAG_NAME, INPUT_TAG)
             file_input.send_keys(video_path)
-
+            print("Check 4")
             # Wait for upload to finish
             time.sleep(5)
-
+            print("Check 5")
             # Set title
             textboxes = driver.find_elements(By.ID, YOUTUBE_TEXTBOX_ID)
-
+            print("Check 6")
             title_el = textboxes[0]
             description_el = textboxes[-1]
-
+            print("Check 7")
             if verbose:
                 info("\t=> Setting title...")
-
+            print("Check 8")
             title_el.click()
             time.sleep(1)
             title_el.clear()
             title_el.send_keys(self.metadata["title"])
-
+            print("Check 9")
             if verbose:
                 info("\t=> Setting description...")
-
+            print("Check 10")
             # Set description
             time.sleep(10)
             description_el.click()
             time.sleep(0.5)
             description_el.clear()
             description_el.send_keys(self.metadata["description"])
-
+            print("Check 11")
             time.sleep(0.5)
-
+            print("Check 12")
             # Set `made for kids` option
             if verbose:
                 info("\t=> Setting `made for kids` option...")
-
+            print("Check 13")
             is_for_kids_checkbox = driver.find_element(By.NAME, YOUTUBE_MADE_FOR_KIDS_NAME)
             is_not_for_kids_checkbox = driver.find_element(By.NAME, YOUTUBE_NOT_MADE_FOR_KIDS_NAME)
 
@@ -158,22 +164,22 @@ class YouTube:
                 is_not_for_kids_checkbox.click()
             else:
                 is_for_kids_checkbox.click()
-
+            print("Check 14")
             time.sleep(0.5)
 
             # Click next
             if verbose:
                 info("\t=> Clicking next...")
-
+            print("Check 15")
             next_button = driver.find_element(By.ID, YOUTUBE_NEXT_BUTTON_ID)
             next_button.click()
-
+            print("Check 16")
             # Click next again
             if verbose:
                 info("\t=> Clicking next again...")
             next_button = driver.find_element(By.ID, YOUTUBE_NEXT_BUTTON_ID)
             next_button.click()
-
+            print("Check 17")
             # Wait for 2 seconds
             time.sleep(2)
 
@@ -182,28 +188,28 @@ class YouTube:
                 info("\t=> Clicking next again...")
             next_button = driver.find_element(By.ID, YOUTUBE_NEXT_BUTTON_ID)
             next_button.click()
-
+            print("Check 18")
             # Set as unlisted
             if verbose:
                 info("\t=> Setting as unlisted...")
 
             radio_button = driver.find_elements(By.XPATH, YOUTUBE_RADIO_BUTTON_XPATH)
             radio_button[2].click()
-
+            print("Check 19")
             if verbose:
                 info("\t=> Clicking done button...")
 
             # Click done button
             done_button = driver.find_element(By.ID, YOUTUBE_DONE_BUTTON_ID)
             done_button.click()
-
+            print("Check 20")
             # Wait for 2 seconds
             time.sleep(2)
 
             # Get latest video
             if verbose:
                 info("\t=> Getting video URL...")
-
+            print("Check 21")
             # Get the latest uploaded video URL
             driver.get(f"https://studio.youtube.com/channel/{self.channel_id}/videos/short")
             time.sleep(2)
@@ -214,15 +220,15 @@ class YouTube:
             if verbose:
                 info(f"\t=> Extracting video ID from URL: {href}")
             video_id = href.split("/")[-2]
-
+            print("Check 22")
             # Build URL
             url = build_url(video_id)
-
+            print("Check 23")
             self.uploaded_video_url = url
 
             if verbose:
                 success(f" => Uploaded Video: {url}")
-
+            print("Check 24")
             # Add video to cache
             self.add_video({
                 "title": self.metadata["title"],
@@ -230,7 +236,7 @@ class YouTube:
                 "url": url,
                 "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             })
-
+            print("Check 25")
             # Close the browser
             driver.quit()
 
