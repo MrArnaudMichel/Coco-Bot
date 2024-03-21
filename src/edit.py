@@ -71,8 +71,6 @@ class Edit:
                     i += 1
                 sub.content = "".join(line[:i]) + "\n" + "".join(line[i:])
 
-
-
         subs = subs_splited_with_max_35char
 
         for i, sub in enumerate(subs):
@@ -89,7 +87,7 @@ class Edit:
         :param title_text: Text to be displayed as the title.
         :return: CompositeVideoClip object with the title added.
         """
-        title_clip = TextClip(title_text, fontsize=((1 / (len(title_text)/5)) * 128), color='white',
+        title_clip = TextClip(title_text, fontsize=((1 / (len(title_text) / 5)) * 128), color='white',
                               bg_color='black').set_duration(video.duration)
         title_clip = title_clip.set_position(('center', 100))
         final_video = CompositeVideoClip([video, title_clip])
