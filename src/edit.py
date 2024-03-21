@@ -63,8 +63,15 @@ class Edit:
         subs_splited_with_max_35char = []
         for sub in subs:
             if len(sub.content) > 35:
-                sub.content = sub.content[:35] + "\n" + sub.content[35:]
-            subs_splited_with_max_35char.append(sub)
+                line = sub.content.split(" ")
+                index = 0
+                i = 0
+                while index < 35:
+                    index += len(line[i])
+                    i += 1
+                sub.content = "".join(line[:i]) + "\n" + "".join(line[i:])
+
+
 
         subs = subs_splited_with_max_35char
 
