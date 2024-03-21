@@ -1,5 +1,4 @@
 import copy
-import os
 from datetime import timedelta
 
 import assemblyai as aai
