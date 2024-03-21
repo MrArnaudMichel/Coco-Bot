@@ -96,10 +96,10 @@ class Bananabot:
         """
         lines = self.file_manager.get_all_videos()
         for i, line in enumerate(lines):
-            video: tuple[str, str] = (line.split(" ")[0], lines[i].split(" ")[1])
+            video: tuple[str, str] = (line.split("CharacterSplit")[0], lines[i].split("CharacterSplit")[1])
             print(f"{i + 1}. {video[1]}")
         choice = input("Enter the number of the video you want to see: ")
-        video = lines[int(choice) - 1].split("+CharacterSplit+")[0]
+        video = lines[int(choice) - 1].split("CharacterSplit")[0]
         print(colored(f"> Showing {video}...", "blue"))
         print(colored(f"""
             Name: {video}

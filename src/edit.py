@@ -60,6 +60,13 @@ class Edit:
         subs = list(srt.parse(subtitles))
 
         subs = [sub for sub in subs if start <= sub.start.total_seconds() <= end]
+        subs_splited_with_max_35char = []
+        for sub in subs:
+            if len(sub.content) > 35:
+                sub.content = sub.content[:35] + "\n" + sub.content[35:]
+            subs_splited_with_max_35char.append(sub)
+
+        subs = subs_splited_with_max_35char
 
         for i, sub in enumerate(subs):
             sub.start -= timedelta(seconds=start)

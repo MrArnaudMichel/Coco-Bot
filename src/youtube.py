@@ -22,7 +22,7 @@ class YouTube:
         :param url:
         :return title_hash:
         """
-        print(colored("> Downloading video... This may take a while.", "green"))
+        print(colored("> Downloading video... This may take a while. More the video length, more the time.", "green"))
         pytube = PyTube(url)
         video = pytube.streams.get_highest_resolution()
 
@@ -37,7 +37,14 @@ class YouTube:
 
         # Use the hash as the output name
         video.download(self.DOWNLOAD_DIR, filename=title_hash + ".mp4")
+
+        print(colored(f"> Downloaded video as {title_hash}.mp4", "green"))
+        lines = self.file_manager.get_all_videos()
+        for i, line in enumerate(lines):
+            videos: tuple[str, str] = (line.split(" ")[0], lines[i].split(" ")[1])
+            if videos[0] == title_hash:
+                print(colored("WARNING: Video already downloaded.", "yellow"))
+                return title_hash
         self.file_manager.write_to_file(f"{self.CONFIG}/video_titles.txt",
                                         f"{title_hash}+CharacterSplit+{video_title}\n", add_to_end=True)
-        print(colored(f"> Downloaded video as {title_hash}.mp4", "green"))
         return title_hash
