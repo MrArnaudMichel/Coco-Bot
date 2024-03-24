@@ -4,7 +4,7 @@ from edit import Edit
 from termcolor import colored
 from config import Config
 from status import *
-
+from upload_video import *
 
 class Bananabot:
     """
@@ -60,13 +60,13 @@ class Bananabot:
                 else:
                     title_hash = self.youtube.download_video(url)
                     self.edit_video(title_hash)
+                    self.upload_video(title_hash, len(self.file_manager.get_all_files(f"uploads/{title_hash}")))
             elif choice == "2":
                 info("\t> See the downloaded video")
                 self.show_downloaded_video()
             elif choice == "3":
                 info("\t> Upload video to YouTube")
-                path = self.show_downloaded_video() + "part1.mp4"
-                self.youtube.upload_video(path)
+                self.upload_video(self.show_downloaded_video())
             elif choice == "4":
                 info("\t> Download video from Local File")
                 path = question("Enter the path of the video (Absolute path): ")
@@ -107,7 +107,7 @@ class Bananabot:
             Path: uploads/{video[0]}/
             Number of parts: {len(self.file_manager.get_all_files(f"uploads/{video[0]}"))}
             """, "blue"))
-        return f'uploads/{video[0]}/'
+        return f'uploads/{video[0]}/', len(self.file_manager.get_all_files(f"uploads/{video[0]}"))
 
     def help(self):
         """
@@ -147,3 +147,21 @@ class Bananabot:
         else:
             error("Invalid choice. Please try again.")
         self.start()
+
+    def upload_video(self, path, nb_videos=1):
+        """
+        Uploads the video to YouTube.
+        :param path:
+        :param nb_videos:
+        :return:
+        """
+        for i in range(1, nb_videos + 1):
+            upload(f"uploads/{path}/part{i}.mp4",
+                     {
+                          "title": "VasiTuCoco",
+                          "description": "This is a test video. #shorts",
+                          "tags": ["test", "video"],
+                          "category": 22,
+                          "status": "public"
+                     })
+

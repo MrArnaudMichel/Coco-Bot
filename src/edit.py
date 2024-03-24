@@ -6,9 +6,8 @@ import assemblyai.types
 import srt
 from moviepy.editor import *
 from moviepy.video.tools.subtitles import SubtitlesClip
-from termcolor import colored
 from scipy.ndimage import gaussian_filter
-
+from upload_video import upload
 from config import Config
 
 
@@ -17,15 +16,31 @@ def blur(image):
     return gaussian_filter(image.astype(float), sigma=2)
 
 
+def upload_video(path, nb_videos=1):
+    """
+    Uploads the video to YouTube.
+    :param path:
+    :param nb_videos:
+    :return:
+    """
+    upload(f"uploads/{path}.mp4", {
+        "title": "VasiTuCoco",
+        "description": "This is a test video. #shorts",
+        "tags": ["test", "video"],
+        "category": 22,
+        "status": "public"
+    })
+
+
 class Edit:
     """
     Edit class to edit the video.
     """
 
-    def __init__(self, video_name, fileManager, config):
+    def __init__(self, video_name, file_manager, config):
         aai.settings.api_key = config.api_key
         self.config = config
-        self.fileManager = fileManager
+        self.fileManager = file_manager
         self.video_name = video_name
         self.video = VideoFileClip("downloads/" + video_name + ".mp4")
         self.transcript = None
@@ -66,6 +81,8 @@ class Edit:
                 index = 0
                 i = 0
                 while index < 35:
+                    if i >= len(line):
+                        break
                     index += len(line[i])
                     i += 1
                 sub.content = "".join(line[:i]) + "\n" + "".join(line[i:])
@@ -125,6 +142,7 @@ class Edit:
         info(f"\t> Rendering part {i}...")
         os.makedirs(f"uploads/{self.video_name}", exist_ok=True)
         final.write_videofile(f"uploads/{self.video_name}/part{i}.mp4", threads=self.config.threads, fps=self.config.fp)
+        upload_video(f"{self.video_name}/part{i}", 1)
 
     def edit_with_options(self, video, subtitles, i):
         """
@@ -180,7 +198,7 @@ class Edit:
             video = video.set_audio(music)
         return video
 
-    def split_video(self, seconds: int = 60, from_end: int = 5):
+    def split_video(self, seconds: int = 58, from_end: int = 5):
         """
         Splits the video into parts.
         :param seconds: Duration of each part in seconds.

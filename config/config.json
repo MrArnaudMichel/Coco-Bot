@@ -1,8 +1,6 @@
 {
   "assembly_ai_api_key": "2e0dba03d3d844f2acbd1294d7d4b5e0",
-  "youtube_id": "ATFM2G6a3agGCjPH46Mzfw",
-  "youtube_nickname": "Arnold Schwarzenegger",
-  "firefox_profile": "/home/arnaud/.mozilla/firefox/t3t85tzx.default",
+  "auto_upload": true,
   "is_for_kids": false,
   "headless": false,
   "verbose": true,
