@@ -14,7 +14,7 @@ For more information, visit the **[CocoBot website](https://cocobot.arnaudmichel
 
 To install CocoBot, follow the instructions in the [Installation Guide](https://cocobot.arnaudmichel.fr/installation.html).
 
-For a quick start, you can use the following command:
+For the impatient, here is a quick guide:
 
 ```bash
 git clone git@github.com:MrArnaudMichel/Coco-Bot.git
@@ -24,6 +24,8 @@ python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
+
+Then, edit the `config/config.json` file to add your TikTok and YouTube API keys.
 
 ## 🚀 Usage:
 
