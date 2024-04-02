@@ -14,7 +14,7 @@ class Config:
         """
         Initializes the Config class.
         """
-        json_config = json.load(open(os.path.join(ROOT_DIR, "../config/config.json"), "r"))
+        json_config = json.load(open("config/config.json"))
         if "assembly_ai_api_key" not in json_config or json_config["assembly_ai_api_key"] == "":
             print(colored("ERROR: AssemblyAI API key not found in config.json.", "red"))
             exit(1)
@@ -57,7 +57,7 @@ class Config:
         """
         Gets the headless mode.
         """
-        json_config = json.load(open(os.path.join(ROOT_DIR, "../config/config.json"), "r"))
+        json_config = json.load(open("config/config.json"))
         return json_config["headless"]
 
     @classmethod
@@ -65,7 +65,7 @@ class Config:
         """
         Gets the Firefox profile path.
         """
-        json_config = json.load(open(os.path.join(ROOT_DIR, "../config/config.json"), "r"))
+        json_config = json.load(open("config/config.json"))
         return json_config["firefox_profile"]
 
     @classmethod
@@ -73,7 +73,7 @@ class Config:
         """
         Gets the title.
         """
-        json_config = json.load(open(os.path.join(ROOT_DIR, "../config/config.json"), "r"))
+        json_config = json.load(open("config/config.json"))
         return json_config["title"]
 
     @classmethod
@@ -81,7 +81,7 @@ class Config:
         """
         Gets the account UUID.
         """
-        json_config = json.load(open(os.path.join(ROOT_DIR, "../config/config.json"), "r"))
+        json_config = json.load(open("config/config.json"))
         return json_config["youtube_id"]
 
     @classmethod
@@ -89,7 +89,7 @@ class Config:
         """
         Gets the account nickname.
         """
-        json_config = json.load(open(os.path.join(ROOT_DIR, "../config/config.json"), "r"))
+        json_config = json.load(open("config/config.json"))
         return json_config["youtube_nickname"]
 
     @classmethod
@@ -100,7 +100,7 @@ class Config:
         Returns:
             verbose (bool): The verbose flag
         """
-        with open(os.path.join(ROOT_DIR, "config.json"), "r") as file:
+        with open("config/config.json") as file:
             return json.load(file)["verbose"]
 
     @classmethod
@@ -108,5 +108,5 @@ class Config:
         """
         Gets the is_for_kids flag.
         """
-        json_config = json.load(open(os.path.join(ROOT_DIR, "../config/config.json"), "r"))
+        json_config = json.load(open("config/config.json"))
         return json_config["is_for_kids"]
