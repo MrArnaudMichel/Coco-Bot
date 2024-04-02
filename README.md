@@ -34,6 +34,7 @@ To use CocoBot, follow the instructions in the [User Guide](https://cocobot.arna
 ## 🛠️ Development:
 
 To contribute to CocoBot, follow the instructions in the [Development Guide](https://cocobot.arnaudmichel.fr/contributing.html).
+You can also join the [Discord server](https://discord.gg/rBNqek3msc) to discuss the project with the community.
 
 ## 📜 License:
 
