@@ -1,6 +1,6 @@
 # CocoBot
 
-![CocoBot](https://github.com/MrArnaudMichel/Coco-Bot/blob/main/assets/147720183/dfeaec5f-c6bc-40e2-bb9c-698edc9db486)
+![CocoBot](https://github.com/MrArnaudMichel/Coco-Bot/blob/main/assets/images/CocoBotLogo.png?raw=true)
 
 ## Goal of the App:
 CocoBot 🤖 bridges content creation and platform optimization by automating video editing for TikTok and YouTube Shorts. Its goal is to enhance engagement and visibility of videos, empowering creators to reach wider audiences with polished content.
