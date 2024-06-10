@@ -1,5 +1,3 @@
-from termcolor import colored
-
 
 def error(message: str, show_emoji: bool = True) -> None:
     """
@@ -13,7 +11,7 @@ def error(message: str, show_emoji: bool = True) -> None:
         None
     """
     emoji = "❌" if show_emoji else ""
-    print(colored(f"{emoji} {message}", "red"))
+    print(f"{emoji} {message}")
 
 
 def success(message: str, show_emoji: bool = True) -> None:
@@ -28,7 +26,7 @@ def success(message: str, show_emoji: bool = True) -> None:
         None
     """
     emoji = "✅" if show_emoji else ""
-    print(colored(f"{emoji} {message}", "green"))
+    print(f"{emoji} {message}")
 
 
 def info(message: str, show_emoji: bool = True) -> None:
@@ -43,7 +41,7 @@ def info(message: str, show_emoji: bool = True) -> None:
         None
     """
     emoji = "ℹ️" if show_emoji else ""
-    print(colored(f"{emoji} {message}", "magenta"))
+    print(f"{emoji} {message}")
 
 
 def warning(message: str, show_emoji: bool = True) -> None:
@@ -58,7 +56,7 @@ def warning(message: str, show_emoji: bool = True) -> None:
         None
     """
     emoji = "⚠️" if show_emoji else ""
-    print(colored(f"{emoji} {message}", "yellow"))
+    print(f"{emoji} {message}")
 
 
 def question(message: str, show_emoji: bool = True) -> str:
@@ -73,4 +71,4 @@ def question(message: str, show_emoji: bool = True) -> str:
         user_input (str): The user's input
     """
     emoji = "❓" if show_emoji else ""
-    return input(colored(f"{emoji} {message}", "blue"))
+    return input(f"{emoji} {message}")

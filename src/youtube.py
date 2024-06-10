@@ -1,23 +1,11 @@
 import hashlib
 import os
 
-from imageio.testing import ROOT_DIR
 from pytube import YouTube as PyTube
 
 from fileManager import FileManager
 
 from status import *
-
-
-def get_cache_path() -> str:
-    """
-    Gets the path to the cache file.
-
-    Returns:
-        path (str): The path to the cache folder
-    """
-    print(ROOT_DIR)
-    return os.path.join(ROOT_DIR, '.mp')
 
 
 class YouTube:
@@ -30,7 +18,6 @@ class YouTube:
         self.DOWNLOAD_DIR = "downloads"
         self.UPLOAD_DIR = "uploads"
         self.CONFIG = "config"
-
 
     def download_video(self, url: str) -> str:
         """

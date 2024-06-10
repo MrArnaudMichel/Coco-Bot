@@ -1,9 +1,6 @@
 import os
 import json
 
-from imageio.testing import ROOT_DIR
-from termcolor import colored
-
 
 class Config:
     """
@@ -16,19 +13,19 @@ class Config:
         """
         json_config = json.load(open("config/config.json"))
         if "assembly_ai_api_key" not in json_config or json_config["assembly_ai_api_key"] == "":
-            print(colored("ERROR: AssemblyAI API key not found in config.json.", "red"))
+            print("ERROR: AssemblyAI API key not found in config.json.")
             exit(1)
         self.api_key = json_config["assembly_ai_api_key"]
         self.font = json_config["font"]
         if not os.path.exists(json_config["font"]):
-            print(colored(f"ERROR: Font file {json_config['font']} does not exist.", "red"))
+            print(f"ERROR: Font file {json_config['font']} does not exist.")
             exit(1)
         elif not os.path.isfile(json_config["font"]):
-            print(colored(f"ERROR: Font file {json_config['font']} is not a file.", "red"))
+            print(f"ERROR: Font file {json_config['font']} is not a file.")
             exit(1)
         self.font_size = json_config["font_size"]
         if self.font_size < 0:
-            print(colored("ERROR: Font size cannot be negative.", "red"))
+            print("ERROR: Font size cannot be negative.")
             exit(1)
         self.font_color = json_config["font_color"]
         self.font_background_color = json_config["font_background_color"]
@@ -43,14 +40,14 @@ class Config:
         self.music = json_config["music"]
         self.music_volume = json_config["music_volume"]
         if not os.path.exists("../" + json_config["music"]):
-            print(colored(f"ERROR: Music file {json_config['music']} does not exist.", "red"))
+            print(f"ERROR: Music file {json_config['music']} does not exist.",)
             exit(1)
         self.fp = json_config["fps"]
         if self.fp < 0:
-            print(colored("ERROR: FPS cannot be negative.", "red"))
+            print("ERROR: FPS cannot be negative.")
             exit(1)
         elif self.fp > 60:
-            print(colored("WARNING: FPS more than 60 can increase file size and time to render.", "yellow"))
+            print("WARNING: FPS more than 60 can increase file size and time to render.", "yellow")
 
     @classmethod
     def get_headless(cls):

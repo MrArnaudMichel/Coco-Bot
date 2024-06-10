@@ -3,8 +3,6 @@ import json
 import os
 
 
-from termcolor import colored
-
 
 class FileManager:
     """
@@ -106,5 +104,5 @@ class FileManager:
         os.system(f"cp {path} {self.DOWNLOAD_DIR}/{title_hash}.mp4")
         self.write_to_file(f"{self.CONFIG_DIR}/video_titles.txt",
                            f"{title_hash}+CharacterSplit+{path}\n", add_to_end=True)
-        print(colored(f"> Downloaded video as {title_hash}.mp4", "green"))
+        print(f"> Downloaded video as {title_hash}.mp4")
         return title_hash
