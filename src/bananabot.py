@@ -1,10 +1,10 @@
 from fileManager import FileManager
 from youtube import YouTube
 from edit import Edit
-from termcolor import colored
 from config import Config
 from status import *
 from upload_video import *
+
 
 class Bananabot:
     """
@@ -27,7 +27,7 @@ class Bananabot:
         Runs the bot.
         print BananaBot in ASCII art
         """
-        print(colored(open("config/logo", "r").read(), "yellow"))
+        print(open("config/logo", "r").read())
 
         success("Welcome to BananaBot!", show_emoji=False)
         self.start()
@@ -101,12 +101,12 @@ class Bananabot:
         choice = question("Enter the number of the video you want to see: ")
         video = lines[int(choice) - 1].split("CharacterSplit")[0], lines[int(choice) - 1].split("CharacterSplit")[1]
         info(f"\t> Showing {video[1]}")
-        print(colored(f"""
+        print(f"""
             Title: {video[1]}
             Id: {video[0]}
             Path: uploads/{video[0]}/
             Number of parts: {len(self.file_manager.get_all_files(f"uploads/{video[0]}"))}
-            """, "blue"))
+            """)
         return f'uploads/{video[0]}/', len(self.file_manager.get_all_files(f"uploads/{video[0]}"))
 
     def help(self):
@@ -125,7 +125,8 @@ class Bananabot:
         choice = question("Enter the number of the question you want to see: ")
         if choice == "1":
             info("How to have my AssemblyAI API key?")
-            info("\t> To have your AssemblyAI API key, go to https://www.assemblyai.com/dashboard/signup and sign up. Then, go to the dashboard and copy your API key.")
+            info(
+                "\t> To have your AssemblyAI API key, go to https://www.assemblyai.com/dashboard/signup and sign up. Then, go to the dashboard and copy your API key.")
         elif choice == "2":
             info("How to use the bot?")
             info("\t> To use the bot, follow the instructions given in the README.md file.")
@@ -157,11 +158,10 @@ class Bananabot:
         """
         for i in range(1, nb_videos + 1):
             upload(f"uploads/{path}/part{i}.mp4",
-                     {
-                          "title": "VasiTuCoco",
-                          "description": "This is a test video. #shorts",
-                          "tags": ["test", "video"],
-                          "category": 22,
-                          "status": "public"
-                     })
-
+                   {
+                       "title": "VasiTuCoco",
+                       "description": "This is a test video. #shorts",
+                       "tags": ["test", "video"],
+                       "category": 22,
+                       "status": "public"
+                   })
